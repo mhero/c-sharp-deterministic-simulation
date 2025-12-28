@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using DeterministicSimulation.Core.Events;
 using DeterministicSimulation.Core.Time;
 

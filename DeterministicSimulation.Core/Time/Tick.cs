@@ -1,3 +1,5 @@
+using System;
+
 namespace DeterministicSimulation.Core.Time;
 
 public readonly struct Tick : IComparable<Tick>, IEquatable<Tick>

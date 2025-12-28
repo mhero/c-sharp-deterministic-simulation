@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeterministicSimulation.Core", "DeterministicSimulation.Core\DeterministicSimulation.Core.csproj", "{6CDDFE38-B825-47E1-ACAA-A690F88BC6D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeterministicSimulation.Tests", "DeterministicSimulation.Tests\DeterministicSimulation.Tests.csproj", "{A2AB1900-4D84-490D-B5FC-D7156795C519}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{6CDDFE38-B825-47E1-ACAA-A690F88BC6D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CDDFE38-B825-47E1-ACAA-A690F88BC6D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CDDFE38-B825-47E1-ACAA-A690F88BC6D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2AB1900-4D84-490D-B5FC-D7156795C519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2AB1900-4D84-490D-B5FC-D7156795C519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2AB1900-4D84-490D-B5FC-D7156795C519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2AB1900-4D84-490D-B5FC-D7156795C519}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
