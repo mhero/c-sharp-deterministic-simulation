@@ -1,0 +1,49 @@
+# Build outputs
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+
+# Rider / IntelliJ
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# Dotnet tools & cache
+.dotnet/
+*.cache
+*.log
+
+# Test results
+TestResults/
+coverage/
+coverage.xml
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Publish outputs
+publish/
+
+# OS junk
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Secrets
+appsettings.*.json
+secrets.json
