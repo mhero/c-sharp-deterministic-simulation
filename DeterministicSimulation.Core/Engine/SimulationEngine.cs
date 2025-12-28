@@ -2,6 +2,7 @@ using System;
 using DeterministicSimulation.Core.Events;
 using DeterministicSimulation.Core.State;
 using DeterministicSimulation.Core.Time;
+using DeterministicSimulation.Core.Engine.Snapshot;
 
 namespace DeterministicSimulation.Core.Engine;
 
@@ -44,5 +45,18 @@ public sealed class SimulationEngine
         }
 
         return state;
+    }
+
+    public SimulationState RunFromSnapshot(
+        SnapshotStore snapshots,
+        SimulationState initialState,
+        EventSchedule schedule,
+        Tick targetTick)
+    {
+        var snapshot = snapshots.GetLatestAtOrBefore(targetTick);
+
+        var startState = snapshot?.State ?? initialState;
+
+        return Run(startState, schedule, targetTick);
     }
 }
