@@ -3,7 +3,14 @@ using DeterministicSimulation.Core.Time;
 
 namespace DeterministicSimulation.Core.Engine.Snapshot;
 
-public sealed record SimulationSnapshot(
-    Tick Tick,
-    SimulationState State
-);
+public sealed class SimulationSnapshot
+{
+    public Tick Tick { get; }
+    public SimulationState State { get; }
+
+    public SimulationSnapshot(SimulationState state)
+    {
+        State = state;
+        Tick = state.Tick;
+    }
+}

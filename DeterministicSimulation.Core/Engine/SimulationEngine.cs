@@ -48,15 +48,22 @@ public sealed class SimulationEngine
     }
 
     public SimulationState RunFromSnapshot(
-        SnapshotStore snapshots,
-        SimulationState initialState,
-        EventSchedule schedule,
-        Tick targetTick)
+    SnapshotStore snapshots,
+    SimulationState initialState,
+    EventSchedule schedule,
+    Tick targetTick)
     {
         var snapshot = snapshots.GetLatestAtOrBefore(targetTick);
 
-        var startState = snapshot?.State ?? initialState;
+        if (snapshot != null && snapshot.Tick < initialState.Tick)
+            throw new InvalidOperationException(
+                "Snapshot predates initial state.");
+
+        var startState = snapshot is null
+            ? initialState
+            : snapshot.State;
 
         return Run(startState, schedule, targetTick);
     }
+
 }

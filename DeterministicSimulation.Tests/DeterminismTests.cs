@@ -77,7 +77,7 @@ public sealed class DeterminismTests
         // Snapshot at tick 2
         var snapshotState = engine.Run(initialState, schedule, new Tick(2));
         var store = new SnapshotStore();
-        store.Save(new SimulationSnapshot(new Tick(2), snapshotState));
+        store.Save(new SimulationSnapshot(snapshotState));
 
         // Replay from snapshot
         var fromSnapshot = engine.RunFromSnapshot(
@@ -93,11 +93,12 @@ public sealed class DeterminismTests
 
     private static string Fingerprint(SimulationState state)
     {
-        return string.Join(
-            "|",
-            state.Entities
-                .OrderBy(e => e.Key)
-                .Select(e => $"{e.Key}:{e.Value.X},{e.Value.Y}")
-        );
+        return state.Tick.Value + "|" +
+            string.Join(
+                "|",
+                state.Entities
+                    .OrderBy(e => e.Key)
+                    .Select(e => $"{e.Key}:{e.Value.X},{e.Value.Y}")
+            );
     }
 }
