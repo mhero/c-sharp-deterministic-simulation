@@ -112,6 +112,52 @@ public sealed class DeterminismTests
 
     }
 
+    [TestMethod]
+    public void StressTest_10kEvents_Deterministic()
+    {
+        const int entityCount = 100;
+        const int eventCount = 10000;
+
+        // Initial entities
+        var entities = new Dictionary<string, EntityState>();
+        for (int i = 0; i < entityCount; i++)
+            entities[$"E{i}"] = new EntityState(0, 0);
+
+        var initialState = new SimulationState(Tick.Zero, entities);
+
+        // Random-ish but deterministic events
+        var events = new List<SimEvent>();
+        for (int t = 1; t <= eventCount; t++)
+        {
+            int eId = t % entityCount;
+            events.Add(new MoveEntity(new Tick(t), $"E{eId}", 1, 1));
+        }
+
+        var schedule = new EventSchedule(events);
+        var engine = new SimulationEngine();
+
+        // Full replay
+        var full = engine.Run(initialState, schedule, new Tick(eventCount));
+
+        // Take snapshots every 1000 ticks
+        var store = new SnapshotStore();
+        for (int snapTick = 1000; snapTick <= eventCount; snapTick += 1000)
+        {
+            var snapState = engine.Run(initialState, schedule, new Tick(snapTick));
+            store.Save(new SimulationSnapshot(snapState));
+        }
+
+        // Replay from last snapshot
+        var fromSnapshot = engine.RunFromSnapshot(
+            store,
+            initialState,
+            schedule,
+            new Tick(eventCount)
+        );
+
+        // Verify final state matches
+        Assert.AreEqual(Fingerprint(full), Fingerprint(fromSnapshot));
+    }
 
     private static string Fingerprint(SimulationState state)
     {
