@@ -5,17 +5,12 @@ using DeterministicSimulation.Core.Time;
 
 namespace DeterministicSimulation.Core.Engine;
 
-public sealed class EventSchedule
+public sealed class EventSchedule(IEnumerable<SimEvent> events)
 {
-    private readonly IReadOnlyList<SimEvent> _events;
-
-    public EventSchedule(IEnumerable<SimEvent> events)
-    {
-        _events = [.. events
+    private readonly IReadOnlyList<SimEvent> _events = [.. events
             .OrderBy(e => e.Tick)
             .ThenBy(e => e.GetType().FullName)];
-    }
 
-    public IEnumerable<SimEvent> ForTick(Tick tick) =>
+  public IEnumerable<SimEvent> ForTick(Tick tick) =>
         _events.Where(e => e.Tick == tick);
 }
