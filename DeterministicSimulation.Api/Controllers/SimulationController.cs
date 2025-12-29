@@ -1,0 +1,48 @@
+using Microsoft.AspNetCore.Mvc;
+using DeterministicSimulation.Core.Engine;
+using DeterministicSimulation.Core.Engine.Snapshot;
+using DeterministicSimulation.Core.State;
+using DeterministicSimulation.Core.Time;
+using DeterministicSimulation.Api.Dtos;
+
+namespace DeterministicSimulation.Api.Controllers;
+
+[ApiController]
+[Route("simulation")]
+public sealed class SimulationController : ControllerBase
+{
+    private readonly SimulationEngine _engine = new();
+
+    [HttpPost("run")]
+    public ActionResult<RunResponse> Run([FromBody] RunRequest request)
+    {
+        var schedule = new EventSchedule(request.Events);
+
+        var result = _engine.Run(
+            request.InitialState,
+            schedule,
+            new Tick(request.TargetTick)
+        );
+
+        return Ok(new RunResponse(result));
+    }
+
+    [HttpPost("replay-from-snapshot")]
+    public ActionResult<SimulationState> ReplayFromSnapshot(
+        [FromBody] ReplayFromSnapshotRequest request)
+    {
+        var store = new SnapshotStore();
+        store.Save(request.Snapshot);
+
+        var schedule = new EventSchedule(request.Run.Events);
+
+        var result = _engine.RunFromSnapshot(
+            store,
+            request.Run.InitialState,
+            schedule,
+            new Tick(request.Run.TargetTick)
+        );
+
+        return Ok(result);
+    }
+}
