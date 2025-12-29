@@ -14,7 +14,7 @@ public readonly struct Tick : IComparable<Tick>, IEquatable<Tick>
         Value = value;
     }
 
-    public static Tick Zero => new Tick(0);
+    public static Tick Zero => new(0);
 
     public Tick Next() => new(Value + 1);
 

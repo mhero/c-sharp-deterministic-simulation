@@ -1,11 +1,10 @@
-using DeterministicSimulation.Core.Events;
-using DeterministicSimulation.Core.State;
-using DeterministicSimulation.Core.Time;
+using System.Collections.Generic;
 
 namespace DeterministicSimulation.Api.Dtos;
 
-public sealed record RunRequest(
-    SimulationState InitialState,
-    SimEvent[] Events,
-    int TargetTick
-);
+public sealed record RunRequest
+{
+    public InitialStateDto InitialState { get; init; } = default!;
+    public int TargetTick { get; init; }
+    public IReadOnlyList<SimEventDto> Events { get; init; } = [];
+}
