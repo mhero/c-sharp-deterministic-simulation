@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using DeterministicSimulation.Core.Events;
-using DeterministicSimulation.Core.Time;
 
 namespace DeterministicSimulation.Core.State;
 
@@ -13,7 +12,7 @@ public static class StateUpdater
     {
         return ev switch
         {
-            Events.MoveEntity move => ApplyMove(previous, move),
+            MoveEntity move => ApplyMove(previous, move),
             _ => throw new InvalidOperationException(
                 $"Unhandled event type: {ev.GetType().Name}")
         };
@@ -21,17 +20,16 @@ public static class StateUpdater
 
     private static SimulationState ApplyMove(
         SimulationState prev,
-        Events.MoveEntity move)
+        MoveEntity move)
     {
         if (!prev.Entities.TryGetValue(move.EntityId, out var entity))
             throw new InvalidOperationException(
                 $"Entity '{move.EntityId}' does not exist.");
 
-        var updatedEntity = entity with
-        {
-            X = entity.X + move.Dx,
-            Y = entity.Y + move.Dy
-        };
+        var updatedEntity = new EntityState(
+            entity.X + move.Dx,
+            entity.Y + move.Dy
+        );
 
         var newEntities = new Dictionary<string, EntityState>(prev.Entities)
         {

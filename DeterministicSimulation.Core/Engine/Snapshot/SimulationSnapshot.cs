@@ -10,7 +10,7 @@ public sealed class SimulationSnapshot
 
     public SimulationSnapshot(SimulationState state)
     {
-        State = state;
         Tick = state.Tick;
+        State = state.Clone();
     }
 }
