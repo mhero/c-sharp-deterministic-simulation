@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DeterministicSimulation.Core.Time;
 
 namespace DeterministicSimulation.Core.State;
@@ -13,7 +14,12 @@ public sealed class SimulationState
         IReadOnlyDictionary<string, EntityState> entities)
     {
         Tick = tick;
-        Entities = entities;
+
+        Entities = new SortedDictionary<string, EntityState>(
+            entities is Dictionary<string, EntityState> d
+                ? d
+                : new Dictionary<string, EntityState>(entities)
+        );
     }
 
     public SimulationState Clone()

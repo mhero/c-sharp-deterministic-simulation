@@ -11,5 +11,5 @@ public sealed class EntityState
         Y = y;
     }
 
-    public EntityState Clone() => new EntityState(X, Y);
+    public EntityState Clone() => new(X, Y);
 }

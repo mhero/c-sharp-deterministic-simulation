@@ -16,7 +16,7 @@ public readonly struct Tick : IComparable<Tick>, IEquatable<Tick>
 
     public static Tick Zero => new Tick(0);
 
-    public Tick Next() => new Tick(Value + 1);
+    public Tick Next() => new(Value + 1);
 
     public static Tick operator +(Tick tick, long delta)
     {

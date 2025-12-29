@@ -90,6 +90,28 @@ public sealed class DeterminismTests
         Assert.AreEqual(Fingerprint(full), Fingerprint(fromSnapshot));
     }
 
+    [TestMethod]
+    public void EventOrdering_IsDeterministic()
+    {
+        var events = new SimEvent[]
+        {
+        new MoveEntity(new Tick(1), "B", 1, 0),
+        new MoveEntity(new Tick(1), "A", 1, 0),
+        new MoveEntity(new Tick(1), "C", 1, 0)
+        };
+
+        var schedule = new EventSchedule(events);
+
+        var ordered = schedule.ForTick(new Tick(1))
+            .OfType<MoveEntity>()
+            .OrderBy(e => e.EntityId)
+            .Select(e => e.EntityId)
+            .ToArray();
+
+        CollectionAssert.AreEqual(new[] { "A", "B", "C" }, ordered);
+
+    }
+
 
     private static string Fingerprint(SimulationState state)
     {

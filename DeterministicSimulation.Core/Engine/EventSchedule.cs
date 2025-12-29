@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DeterministicSimulation.Core.Events;
 using DeterministicSimulation.Core.Time;
 
@@ -10,22 +11,11 @@ public sealed class EventSchedule
 
     public EventSchedule(IEnumerable<SimEvent> events)
     {
-        var list = new List<SimEvent>(events);
-        list.Sort(SimEventComparer.Instance);
-        _events = list;
+        _events = [.. events
+            .OrderBy(e => e.Tick)
+            .ThenBy(e => e.GetType().FullName)];
     }
 
-    public IEnumerable<SimEvent> ForTick(Tick tick)
-    {
-        foreach (var ev in _events)
-        {
-            if (ev.Tick < tick)
-                continue;
-
-            if (ev.Tick > tick)
-                yield break;
-
-            yield return ev;
-        }
-    }
+    public IEnumerable<SimEvent> ForTick(Tick tick) =>
+        _events.Where(e => e.Tick == tick);
 }
