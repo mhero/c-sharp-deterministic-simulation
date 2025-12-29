@@ -20,9 +20,7 @@ public readonly struct Tick : IComparable<Tick>, IEquatable<Tick>
 
     public static Tick operator +(Tick tick, long delta)
     {
-        if (delta < 0)
-            throw new ArgumentOutOfRangeException(nameof(delta));
-
+        ArgumentOutOfRangeException.ThrowIfNegative(delta);
         return new Tick(tick.Value + delta);
     }
 

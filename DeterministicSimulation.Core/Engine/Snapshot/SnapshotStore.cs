@@ -6,7 +6,13 @@ namespace DeterministicSimulation.Core.Engine.Snapshot;
 
 public sealed class SnapshotStore
 {
-    private readonly Dictionary<long, SimulationSnapshot> _snapshots = new();
+    private readonly Dictionary<long, SimulationSnapshot> _snapshots = [];
+
+    public SnapshotStore()
+    {
+        // Intentionally empty
+    }
+    public SnapshotStore(SimulationSnapshot snapshot) => _snapshots[snapshot.Tick.Value] = snapshot;
 
     public void Save(SimulationSnapshot snapshot)
     {

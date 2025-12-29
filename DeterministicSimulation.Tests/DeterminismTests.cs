@@ -76,8 +76,7 @@ public sealed class DeterminismTests
 
         // Snapshot at tick 2
         var snapshotState = engine.Run(initialState, schedule, new Tick(2));
-        var store = new SnapshotStore();
-        store.Save(new SimulationSnapshot(snapshotState));
+        var store = new SnapshotStore(new SimulationSnapshot(snapshotState));
 
         // Replay from snapshot
         var fromSnapshot = engine.RunFromSnapshot(

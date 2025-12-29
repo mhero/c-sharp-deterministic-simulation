@@ -33,8 +33,7 @@ public sealed class SimulationController : ControllerBase
     public ActionResult<RunResponse> ReplayFromSnapshot(
         [FromBody] ReplayFromSnapshotRequest request)
     {
-        var store = new SnapshotStore();
-        store.Save(request.Snapshot);
+        var store = new SnapshotStore(request.Snapshot);
 
         var schedule = new EventSchedule(
             request.Run.Events.Select(e => e.ToDomain())

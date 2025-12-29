@@ -1,15 +1,9 @@
 namespace DeterministicSimulation.Core.State;
 
-public sealed class EntityState
+public sealed class EntityState(int x, int y)
 {
-    public int X { get; }
-    public int Y { get; }
+  public int X { get; } = x;
+  public int Y { get; } = y;
 
-    public EntityState(int x, int y)
-    {
-        X = x;
-        Y = y;
-    }
-
-    public EntityState Clone() => new(X, Y);
+  public EntityState Clone() => new(X, Y);
 }
