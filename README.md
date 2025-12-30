@@ -60,18 +60,40 @@ Runs a simulation deterministically.
 ### ✅ Valid Request
 
 ``` bash
-curl -X POST http://localhost:5278/simulation/run   -H "Content-Type: application/json"   -d '{
+curl -X POST http://localhost:5278/simulation/run \
+  -H "Content-Type: application/json" \
+  -d '{
     "initialState": {
       "tick": 0,
       "entities": {
-        "E1": { "x": 0, "y": 0 }
+        "E1": {
+          "fields": {
+            "x": 0,
+            "y": 0
+          }
+        }
       }
     },
     "targetTick": 3,
     "events": [
-      { "type": "MoveEntity", "tick": 1, "entityId": "E1", "dx": 1000, "dy": 0 },
-      { "type": "MoveEntity", "tick": 2, "entityId": "E1", "dx": 0, "dy": 500 },
-      { "type": "MoveEntity", "tick": 3, "entityId": "E1", "dx": -250, "dy": -250 }
+      {
+        "type": "MoveEntity",
+        "tick": 1,
+        "entityId": "E1",
+        "fields": { "x": 1000, "y": 0 }
+      },
+      {
+        "type": "MoveEntity",
+        "tick": 2,
+        "entityId": "E1",
+        "fields": { "x": 0, "y": 500 }
+      },
+      {
+        "type": "MoveEntity",
+        "tick": 3,
+        "entityId": "E1",
+        "fields": { "x": -250, "y": -250 }
+      }
     ]
   }'
 ```
@@ -82,37 +104,12 @@ curl -X POST http://localhost:5278/simulation/run   -H "Content-Type: applicatio
 {
   "tick": 3,
   "entities": {
-    "E1": { "x": 750, "y": 250 }
-  }
-}
-```
-
-------------------------------------------------------------------------
-
-## ❌ Invalid Request (Bad Types)
-
-``` bash
-curl -X POST http://localhost:5278/simulation/run   -H "Content-Type: application/json"   -d '{
-    "initialState": {
-      "tick": "0",
-      "entities": {
-        "E1": { "x": "e", "y": 0 }
+    "E1": {
+      "fields": {
+        "x": -250,
+        "y": -250
       }
-    },
-    "targetTick": 3,
-    "events": []
-  }'
-```
-
-### ❌ Error Response
-
-``` json
-{
-  "error": "Invalid request",
-  "details": {
-    "initialState.entities.E1.x": [
-      "The JSON value could not be converted to System.Int32."
-    ]
+    }
   }
 }
 ```

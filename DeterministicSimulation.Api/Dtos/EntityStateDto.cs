@@ -1,15 +1,14 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using DeterministicSimulation.Core.State;
 
 namespace DeterministicSimulation.Api.Dtos;
 
 public sealed class EntityStateDto
 {
-  [Required]
-  public int X { get; init; }
+    [Required]
+    public Dictionary<string, JsonElement> Fields { get; init; } = [];
 
-  [Required]
-  public int Y { get; init; }
-
-  public EntityState ToDomain() => new(X, Y);
+    public EntityState ToDomain() => new(Fields);
 }

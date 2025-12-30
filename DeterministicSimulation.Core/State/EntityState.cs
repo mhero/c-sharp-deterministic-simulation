@@ -1,9 +1,20 @@
+using System.Collections.Immutable;
+using System.Text.Json;
+using System.Collections.Generic;
+using System;
+
 namespace DeterministicSimulation.Core.State;
 
-public sealed class EntityState(int x, int y)
+public sealed class EntityState(IDictionary<string, JsonElement> fields)
 {
-  public int X { get; } = x;
-  public int Y { get; } = y;
+  public ImmutableSortedDictionary<string, JsonElement> Fields { get; } = fields.ToImmutableSortedDictionary(
+          StringComparer.Ordinal
+      );
 
-  public EntityState Clone() => new(X, Y);
+  public JsonElement this[string key] => Fields[key];
+
+    public EntityState With(string key, JsonElement value)
+        => new(Fields.SetItem(key, value.Clone()));
+
+    public EntityState Clone() => this;
 }

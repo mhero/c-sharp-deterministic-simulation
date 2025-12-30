@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using DeterministicSimulation.Core.Events;
 
 namespace DeterministicSimulation.Core.State;
@@ -26,14 +27,16 @@ public static class StateUpdater
             throw new InvalidOperationException(
                 $"Entity '{move.EntityId}' does not exist.");
 
-        var updatedEntity = new EntityState(
-            entity.X + move.Dx,
-            entity.Y + move.Dy
-        );
+        var updated = entity;
+
+        foreach (var (key, value) in move.Fields)
+        {
+            updated = updated.With(key, value);
+        }
 
         var newEntities = new Dictionary<string, EntityState>(prev.Entities)
         {
-            [move.EntityId] = updatedEntity
+            [move.EntityId] = updated
         };
 
         return new SimulationState(
