@@ -9,7 +9,7 @@ public sealed record MoveEntityDto : SimEventDto
 {
     public string EntityId { get; init; } = "";
 
-    public Dictionary<string, JsonElement> Fields { get; init; } = new();
+    public Dictionary<string, JsonElement> Fields { get; init; } = [];
 
     public override SimEvent ToDomain() =>
         new MoveEntity(
