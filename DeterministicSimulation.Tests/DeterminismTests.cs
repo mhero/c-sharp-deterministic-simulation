@@ -5,7 +5,6 @@ using DeterministicSimulation.Core.State;
 using DeterministicSimulation.Core.Time;
 using DeterministicSimulation.Core.Engine.Snapshot;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 
 namespace DeterministicSimulation.Tests;
@@ -14,7 +13,11 @@ namespace DeterministicSimulation.Tests;
 public sealed class DeterminismTests
 {
     private static JsonElement Num(int v)
-        => JsonDocument.Parse(v.ToString()).RootElement.Clone();
+    {
+        using var doc = JsonDocument.Parse(v.ToString());
+        return doc.RootElement.Clone();
+    }
+
 
     [TestMethod]
     public void SameInputs_ProduceSameFinalState()
@@ -53,7 +56,7 @@ public sealed class DeterminismTests
         var result1 = engine.Run(initialState, schedule, new Tick(3));
         var result2 = engine.Run(initialState, schedule, new Tick(3));
 
-        Assert.AreEqual(Fingerprint(result1), Fingerprint(result2));
+        Assert.AreEqual(result1, result2);
         Assert.AreEqual(new Tick(3), result1.Tick);
     }
 
@@ -95,7 +98,7 @@ public sealed class DeterminismTests
             new Tick(4)
         );
 
-        Assert.AreEqual(Fingerprint(full), Fingerprint(fromSnapshot));
+        Assert.AreEqual(full, fromSnapshot);
     }
 
     [TestMethod]
@@ -166,24 +169,6 @@ public sealed class DeterminismTests
             new Tick(eventCount)
         );
 
-        Assert.AreEqual(Fingerprint(full), Fingerprint(fromSnapshot));
-    }
-
-    private static string Fingerprint(SimulationState state)
-    {
-        return state.Tick.Value + "|" +
-            string.Join(
-                "|",
-                state.Entities
-                    .OrderBy(e => e.Key)
-                    .Select(e =>
-                        e.Key + ":" +
-                        string.Join(
-                            ",",
-                            e.Value.Fields
-                                .Select(f => $"{f.Key}={f.Value}")
-                        )
-                    )
-            );
+        Assert.AreEqual(full, fromSnapshot);
     }
 }
