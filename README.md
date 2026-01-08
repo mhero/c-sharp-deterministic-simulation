@@ -8,7 +8,7 @@ replay integrity at scale**.
 
 ## Requirements
 
--   .NET SDK **9.0**
+-   .NET SDK **10.0**
 -   macOS / Linux / Windows
 
 Check version:
