@@ -88,8 +88,7 @@ public sealed class DeterminismTests
         var full = engine.Run(initialState, schedule, new Tick(4));
 
         var snapshotState = engine.Run(initialState, schedule, new Tick(2));
-        var store = new SnapshotStore();
-        store.Save(new SimulationSnapshot(snapshotState));
+        var store = new SnapshotStore(new SimulationSnapshot(snapshotState));
 
         var fromSnapshot = engine.RunFromSnapshot(
             store,
